@@ -82,9 +82,9 @@
                 .polygonSideColor(() => 'rgba(0, 100, 0, 0.15)') //다각형 옆면 색상 (기둥)
                 .polygonStrokeColor(() => '#000') // 경계선 색상
                 .polygonLabel(({ properties: d }) => `
-      <b style="color: red;">${d.ADMIN} (${d.ISO_A2}):</b> <br />
-      GDP: <i style="color: red;">${d.GDP_MD_EST}</i> M$<br/>
-      Population: <i style="color: red;">${d.POP_EST}</i>
+      <b style="color: red; font-size:1.3em;">${d.ADMIN} (${d.ISO_A2}):</b> <br />
+      <b style="color: black; font-size:1.3em;">GDP:</b> <i style="color: red; font-size:1.2em;">${d.GDP_MD_EST}</i> <b style="color: black; font-size:1.3em;">M$</b><br/>
+      <b style="color: black; font-size:1.3em;">Population:</b> <i style="color: red; font-size:1.2em;">${d.POP_EST}</i>
     `) // 수정 필요 (나라 이름, GDP, 인구)
                 .polygonsTransitionDuration(300) // 다각형이 높이를 조절할 때 걸리는 시간
                 (document.getElementById('globeViz'))
@@ -103,7 +103,7 @@
                     highlightedCountry = matchingCountry; // Store the highlighted country
                     console.log(highlightedCountry);
                     highlightCountry(highlightedCountry);
-                    const MAP_CENTER = { lat: 3.1, lng: -60.6, altitude: 2.2 };
+                    const MAP_CENTER = { lat: 3.1, lng: -60.6, altitude: 2.2 }; // 중심 좌표
                     //const center = d3.geoCentroid(matchingCountry);
                     // world.controls().autoRotate = true;
                     // world.controls().autoRotateSpeed = 0.6;
