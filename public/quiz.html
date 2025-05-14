@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Angkor&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rammetto+One&family=Tourney:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+
+        /* 기본 글꼴과 배경 설정 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0e0e10;
+            color: white;
+            margin: 0;
+            padding: 0;
+            place-items: center;
+            /* 가운데 정렬 */
+
+        }
+
+        /* 하이퍼링크 스타일링*/
+        .Page-Header {
+            width: 100%;
+            display: flex;
+            /* 가로로 나열 */
+            align-items: center;
+            /* 수직 가운데 정렬 */
+            justify-content: space-between;
+            /* 양쪽 여백을 최대로 설정 */
+            background-color: #1c1c1e;
+            /* 배경색 설정 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            /* 그림자 효과 */
+            border-bottom: 5px #ddd solid;
+            /* 하단 테두리 추가 */
+        }
+
+        #Page-Title {
+            text-align: left;
+            /* 텍스트 왼쪽 정렬 */
+            margin-right: 20px;
+            /* 오른쪽 여백 */
+            padding-left: 15px;
+            /* 왼쪽 내부 여백 */
+            padding-top: 5px;
+            /* 위쪽 여백 */
+            padding-bottom: 0;
+            /* 아래쪽 여백 */
+            margin: 0;
+            /* 바깥 여백 제거 */
+            font-size: 50px;
+            /* 글자 크기 */
+            font-weight: 800;
+            /* 글자 굵기 */
+            font-family: 'Black Han Sans', sans-serif;
+            /* 글꼴 설정 */
+        }
+        .wrapper_nav {
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            margin-top: auto;
+            height: 60px;
+            /* 높이 설정 */
+            width: 300px;
+            /* 너비 설정 */
+            line-height: 50px;
+            /* 높이 설정 */
+            background: rgba(51, 48, 48, 0);
+            /* 배경색 설정 */
+            border-radius: 50px;
+            /* 테두리 둥글게 */
+            box-shadow: 0 5px 10 px rgba(0, 0, 0, 0.25);
+            /* 그림자 효과 */
+        }
+
+        .wrapper_nav nav {
+            position: relative;
+            /* 상대위치 */
+            display: flex;
+            /* 가로로 나열 */
+        }
+
+        .wrapper_nav nav label {
+            z-index: 1;
+            /* z-index를 1로 설정 */
+            flex: 1;
+            /* 1:1 비율로 설정 */
+            width: 100%;
+            /* 너비를 100%로 설정 */
+            position: relative;
+            /* 상대위치 */
+            cursor: pointer;
+            /* 커서를 손가락 모양으로 */
+
+        }
+
+        .wrapper_nav nav label a {
+            position: relative;
+            /* 상대위치 */
+            z-index: -1;
+            /*-------------- 03-12 17:48 수정 -----------*/
+            color: #fff;
+            /* 글자색을 흰색으로 설정 */
+            font-family: "Rammetto One", Tahoma, sans-serif;
+
+            font-size: 1.4em;
+            /* 글자 크기를 1.2em으로 설정 */
+            font-weight: 500;
+            /* 글자 두껍게 설정 */
+            text-decoration: none;
+            /* 밑줄 제거 */
+            transition: color 0.6s ease;
+            /* 0.6초 동안 글자색 변화 */
+        }
+
+
+        .wrapper_nav nav #home:checked~label.home a,
+        .wrapper_nav nav #Quiz:checked~label.Quiz a,
+        .wrapper_nav nav #Rank:checked~label.Rank a {
+            color: #000000;
+            /* 글자색을 검정색으로 설정 */
+            font-family: "Rammetto One", Tahoma, sans-serif;
+            font-size: 1.4rem;
+            text-shadow: 3px 1px rgb(179, 176, 176);
+        }
+
+        .wrapper_nav nav .tab {
+            position: absolute;
+            /* 절대위치 */
+            bottom: 0;
+            /* 아래쪽으로 0만큼 떨어진 위치 */
+            left: 0;
+            /* 왼쪽으로 0만큼 떨어진 위치 */
+            width: 25%;
+            /* 너비를 100%로 설정 */
+            height: 100%;
+            /* 높이를 3px로 설정 */
+            border-radius: 50px;
+            /* 50px만큼 둥글게 */
+            transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            /* 0.5초 동안 변화 */
+        }
+
+        .wrapper_nav nav #Quiz:checked~.tab {
+            left: 25%;
+            /* 왼쪽으로 25%만큼 떨어진 위치 */
+        }
+
+        .wrapper_nav nav #Rank:checked~.tab {
+            left: 50%;
+            /* 왼쪽으로 25%만큼 떨어진 위치 */
+        }
+
+        .wrapper_nav nav input {
+            display: none;
+            /* 화면에 표시하지 않음 */
+        }
+
+        /*기존 라디오 버튼의 디자인 초기화*/
+        [type="radio"] {
+            vertical-align: middle;
+            appearance: none;
+        }
+
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-container {
+            margin-top: 1vh;
+            margin-bottom: 1vh;
+        }
+
+        .image-container img {
+            width: 50vw;
+            height: 65vh;
+            object-fit: fill;
+            border-radius: 20px;
+        }
+
+        .answer-container {
+            display: table-column;
+            /* 테이블 열로 정렬 */
+            text-align: center;
+        }
+
+        #result-message {
+            text-align: center;
+            font-family: "Noto Sans KR", sans-serif;
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .answer-container label {
+            display: inline-block;
+            text-align: center;
+            font-family: sans-serif;
+            font-weight: 800;
+            color: #ddd;
+            text-shadow: 5px 5px rgb(48, 47, 47);
+            font-size: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #3a3b3f;
+        }
+
+        .answer-container label:hover {
+            cursor: pointer;
+            background-color: #f45e00;
+            text-shadow: none;
+        }
+
+        #answer-radio {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            width: 50vw;
+            height: 8vh;
+        }
+
+        #answer-radio label {
+            grid-column: auto;
+            grid-row: auto;
+            width: 100%;
+        }
+
+        #clientScore {
+            font-size: 2em;
+            font-family: "Black Han Sans", sans-serif;
+        }
+
+        #submit-button {
+            text-align: center;
+            font-family: "Noto Sans KR", sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            color: #ddd;
+            font-size: 1.5em;
+            border-radius: 10px;
+            background-color: #3a3b3f;
+        }
+
+        /* -----------------------랭크 팝업창 스타일링  03-12 18:48 수정 ------------------------- */
+        .rank-popup-background {
+            display: none;
+            /* 기본적으로 숨김 */
+            position: fixed;
+            top: 0;
+            /* 상단 정렬 */
+            left: 0;
+            /* 왼쪽 정렬 */
+            width: 100%;
+            /* 너비를 100%로 설정 */
+            height: 100%;
+            /* 높이를 100%로 설정 */
+            background: rgba(0, 0, 0, 0.3);
+            /* 반투명 검은색 배경 */
+            align-items: center;
+            /* 가운데 정렬 */
+            justify-content: center;
+            /* 가운데 정렬 */
+            z-index: 1000;
+            /* 팝업창을 최상위로 표시 */
+        }
+
+        .rank-popup-content {
+            background: rgba(5, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            overflow-y: auto;
+        }
+
+        .rank-popup-content h2 {
+            margin-top: 0;
+        }
+
+        .rank-popup-content ul {
+
+            list-style: none;
+            padding: 0;
+        }
+
+        .rank-popup-content ul li {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .rank-popup-content ul li:hover {
+            background: linear-gradient(90deg, rgb(187, 248, 172), rgb(42, 235, 241));
+            /* 배경색 추가 */
+            -webkit-background-clip: text;
+            /* 웹킷 브라우저 대응 */
+            background-clip: text;
+            /* 배경을 글자에 적용 */
+            -webkit-text-fill-color: transparent;
+            /* 글자색을 투명하게 설정 */
+        }
+
+        .rank-close-popup {
+            float: right;
+            cursor: pointer;
+        }
+
+        .rank-close-popup:hover {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Page-Header">
+        <h1 id="Page-Title">Harmony</h1>
+        <div class="wrapper_nav">
+            <nav>
+                <input type="radio" name="nav" id="home">
+                <input type="radio" name="nav" id="Quiz" checked>
+                <input type="radio" name="nav" id="Rank">
+
+                <!-- data-href 속성 추가 -->
+                <label for="home" class="home" data-href="./Harmony.html"><a>Home</a></label>
+                <label for="Quiz" class="Quiz"><a>Quiz</a></label>
+                <label for="Rank" class="Rank" onclick="rank()"><a>Rank</a></label> <!-- 03-12 17:48 수정 -->
+                <div class="tab"></div>
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- 랭크 팝업창 구조  03-12 18:48 수정 -->
+    <div class="rank-popup-background">
+        <div class="rank-popup-content">
+            <span class="rank-close-popup">✖</span>
+            <h2>Ranking</h2>
+            <ul id="rankList"></ul>
+        </div>
+    </div>
+
+    <div class="quiz-container">
+        <div class="image-container">
+            <img id="animal-image" src="" alt="동물 이미지">
+        </div>
+        <div class="answer-container">
+            <div id="answer-radio"></div>
+        </div>
+
+        <p id="result-message"></p>
+        <div id="clientScore"></div>
+
+    </div>
+
+    <script>
+        // 랭크 팝업창 열기 03-12 18:48 수정 
+        function rank() {
+            console.log('rank');
+            fetch('http://localhost:8080/api/v3/test')
+                .then(response => response.json())
+                .then(data => {
+                    // 데이터 처리 및 팝업 내용 채우기
+                    const rankList = document.getElementById('rankList');
+                    rankList.innerHTML = ''; // 이전 내용 초기화
+                    apiUrl = "http://localhost:8080/api/v3/species/list";
+                    // 받아온 데이터를 사용하여 리스트 아이템 생성
+                    data.slice(0, 10).forEach((item, index) => {
+                        const [animalName, searchCount] = item.split(',');
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${index + 1}. ${animalName} - ${searchCount} times`;
+                        listItem.onclick = () => { sendPostRequest(apiUrl, 'speciesName', animalName, 'none'); closePopup_country(); };
+                        rankList.appendChild(listItem);
+                    });
+                    // console.log('이거 들어감:', data);
+                    // 팝업 표시
+                    document.querySelector('.rank-popup-background').style.display = 'flex';
+                })
+                .catch((error) => console.error('Error:', error));
+
+            // 팝업 닫기 이벤트 리스너
+            document.querySelector('.rank-close-popup').addEventListener('click', () => {
+                document.querySelector('.rank-popup-background').style.display = 'none';
+                // "Home" 라디오 버튼을 자동으로 선택
+                document.getElementById('Quiz').checked = true;
+            });
+        }
+
+        // 초기 로드 시 rank 함수에 이벤트 리스너를 한 번만 추가하기 위한 코드
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.Rank').addEventListener('click', rank);
+        });
+
+        const quizApp = (function () {
+            let clientScore = 0;              // 사용자의 정답 제출. 카운트 변수 
+            let currentQuestion = null;       // 최근 문제의 정답
+            let responseData = null;          // 페이지 로드 시에 단 한번 호출되는 전체 species Data
+            let currentQuestionNumbering = 0; // 현재 문제 번호
+            const totalQuestion = 40;         // 문제 수 총량
+            const selectedNames = new Set();  // 중복 문제를 없애주기 위한 Set
+
+            function searchAnimalall() {
+                const apiUrl = 'http://localhost:8080/api/v3/species';
+                fetchmethod(apiUrl, 'speciesName');
+            }
+
+            // fetch 동작은 페이지 로드시에 단 한번 만 수행되도록 설정.
+            function fetchmethod(apiUrl, key1) {
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ [key1]: ' ', mode: "전체" }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        responseData = data;
+                        showqiuz();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function randomPick(dataLenth) {
+                return Math.floor(Math.random() * dataLenth);
+            }
+
+            function showqiuz() {
+                // 전체 배열에서 기존에 맞춘 정답은 제외하고 문제를 형성하는 방식.
+                const unselectedQuestions = responseData.result.filter(question => !selectedNames.has(question.scientific_name_korean));
+
+                // 전체 문제를 맞추었을 경우.
+                if (currentQuestionNumbering == totalQuestion) {
+                    document.getElementById('result-message').textContent = '모든 문제를 맞추셨습니다!';
+                    document.getElementById('submit-button').style.display = 'none';
+                    document.getElementById('answer-radio').style.display = 'none';
+                    document.getElementById('clientScore').textContent = `Score : ${clientScore} ( ${currentQuestionNumbering++}/${totalQuestion} )`;
+                    return;
+                }
+
+                let randomIndex = randomPick(unselectedQuestions.length);
+                currentQuestion = unselectedQuestions[randomIndex];
+                selectedNames.add(currentQuestion.scientific_name_korean);
+
+                const imgElement = document.getElementById('animal-image');
+                imgElement.src = currentQuestion.img_url.split(',')[0];
+                imgElement.alt = currentQuestion.scientific_name_korean;
+
+                const answerRadio = document.getElementById('answer-radio');
+                answerRadio.innerHTML = '';
+                const options = createOptions(unselectedQuestions);
+                options.forEach(option => answerRadio.appendChild(option));
+
+                document.getElementById('clientScore').textContent = `Score : ${clientScore} ( ${currentQuestionNumbering++}/${totalQuestion} )`;
+            }
+
+            function createOptions(unselectedQuestions) {
+                const submitBtn = document.getElementById('submit-button');
+                if (submitBtn.style.display = 'none') { submitBtn.style.display = 'inline-block'; }
+                const options = [];
+                while (options.length < 4) {
+                    const randomIndex = randomPick(unselectedQuestions.length);
+                    const question = unselectedQuestions[randomIndex];
+                    if (!options.includes(question) && question !== currentQuestion) {
+                        options.push(question);
+                    }
+                    // 일단 4개의 보기 문제를 집어 넣음.
+                }
+
+                if (!options.includes(currentQuestion)) {
+                    options[randomPick(4)] = currentQuestion;
+                    // 그 중에 하나의 문제에 정답 보기를 섞는 방식.
+                }
+
+                const optionsElements = options.map(question => {
+                    const option = document.createElement('label');
+                    const radioButton = document.createElement('input');
+                    radioButton.type = 'radio';
+                    radioButton.name = 'answer';
+                    radioButton.value = question.scientific_name_korean;
+                    option.appendChild(radioButton);
+                    option.appendChild(document.createTextNode(question.scientific_name_korean));
+                    return option;
+                });
+
+                function resetOptionsStyle(optionsElements) {
+                    optionsElements.forEach(option => {
+                        option.style.backgroundColor = '#3a3b3f'; // 배경색을 초기화
+                        option.style.textShadow = '5px 5px rgb(48, 47, 47)';
+                    });
+                }
+
+                optionsElements.forEach(option => {
+                    option.addEventListener('click', () => {
+                        resetOptionsStyle(optionsElements);
+                        option.style.backgroundColor = '#f45e00';
+                        option.style.textShadow = 'none';
+                    });
+                });
+                return optionsElements;
+            }
+
+            function checkAnswer(resultMessageElement) {
+                const submitBtn = document.getElementById('submit-button');
+                const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+
+                // 정답을 제출하지 않은 경우
+                if (!selectedAnswer) {
+                    resultMessageElement.innerHTML = `보기를 선택하세요.`;
+                    return;
+                }
+
+                // 제출된 결과가 정답인 경우
+                if (selectedAnswer.value === currentQuestion.scientific_name_korean) {
+                    resultMessageElement.innerHTML = '정답입니다!';
+                    clientScore++;
+                    showqiuz(); // 다음 퀴즈 생성!
+                }
+                // 제출된 결과가 오답인 경우
+                else {
+                    let countSeconds = 3;                       // 카운트 초깃값 3초.
+                    submitBtn.style.display = 'none';           // 틀렸을 경우에 제출 버튼 숨김.
+                    if (clientScore > 0) { clientScore--; }     // 틀렸을 경우 점수 감점.
+                    resultMessageElement.innerHTML = `틀렸습니다. 정답은 "${currentQuestion.scientific_name_korean}"입니다.<br>다음 문제는 <span id="countSeconds"></span>초 뒤에 나옵니다.`;
+
+                    const countSecondsElement = document.getElementById('countSeconds');
+                    countSecondsElement.innerHTML = countSeconds;
+
+                    // 텍스트를 동적으로 제어 3..2..1!
+                    const countDown = setInterval(() => {
+                        countSecondsElement.innerHTML = --countSeconds;
+                        if (countSeconds <= 0) {
+                            clearInterval(countDown);
+                            resultMessageElement.innerHTML = '';
+                            showqiuz();
+                        }
+                    }, 1000) // 1초마다 감소
+                }
+            }
+
+            function init() {
+                document.addEventListener('DOMContentLoaded', () => {
+                    var labels = document.querySelectorAll('.wrapper_nav nav label');
+                    labels.forEach(function (label) {
+                        label.addEventListener('click', function (e) {
+                            // a 태그 내부 클릭 시 페이지 이동 방지
+                            if (e.target.tagName.toLowerCase() === 'a') {
+                                e.preventDefault();
+                            }
+                            // data-href 속성 값으로 페이지 이동
+                            var href = label.getAttribute('data-href');
+                            if (href) {
+                                setTimeout(function () {
+                                    window.location.href = href;
+                                }, 500);
+                            }
+                        });
+                    });
+                    const submitButton = document.createElement('button');
+                    submitButton.textContent = '제출';
+                    submitButton.id = 'submit-button';      // 버튼에 ID 부여
+                    submitButton.style.marginTop = '0.3vh';
+
+                    // answer-container에 버튼 추가
+                    document.querySelector('.answer-container').appendChild(submitButton);
+
+                    // 이벤트 리스너는 한 번 등록
+                    submitButton.addEventListener('click', () => {
+                        checkAnswer(document.getElementById('result-message'));
+                    });
+
+                    // 첫 번째 퀴즈
+                    searchAnimalall();
+                });
+            }
+
+            return { init: init };
+        })();
+
+        quizApp.init();
+    </script>
+
+</body>
+
+</html>
